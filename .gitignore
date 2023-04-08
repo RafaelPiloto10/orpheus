@@ -1,3 +1,10 @@
 .env
+.cache
+.idea
+pyvenv.cfg
+Include
+Lib
+Scripts
+research/.cache
 corpus
 .DS_Store
