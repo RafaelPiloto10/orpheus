@@ -19,7 +19,25 @@ def get_access_token():
     res = requests.post(f"{endpoint}/", headers={"Content-Type": "application/x-www-form-urlencoded"}, params=params)
     return res.json()['access_token']
 
-AUTH_TOKEN = get_access_token()
+
+def get_headers(auth_token):
+    headers = {
+        "credentials": "include",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/111.0",
+        "Accept": "*/*",
+        "Accept-Language": "en-US,en;q=0.5",
+        "Authorization": f"Bearer {auth_token}",
+        "Sec-Fetch-Dest": "empty",
+        "Sec-Fetch-Mode": "cors",
+        "Sec-Fetch-Site": "same-site",
+        "Sec-GPC": "1",
+        "Pragma": "no-cache",
+        "Cache-Control": "no-cache",
+        "referrer": "https://developer.spotify.com/",
+        "method": "GET",
+        "mode": "cors"
+    }
+    return headers
 
 #%%
 # auth_mgr = SpotifyClientCredentials(client_id=CLIENT_ID, client_secret=CLIENT_SECRET)
@@ -42,22 +60,8 @@ async def get_track_json(song: str):
         "limit": 1
     }
 
-    headers = {
-        "credentials": "include",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/111.0",
-        "Accept": "*/*",
-        "Accept-Language": "en-US,en;q=0.5",
-        "Authorization": "Bearer BQAK28BaMjahXVQdoIs3dNo3b281QDoqkMSpcKVnG7_dkGHTx0-LrYjsQzdVeQ6-LIc1k7NSEhobjxMA5R9Z8wBc5nMBSzsK5mMoXnFkNnEp-Eg1aLEKcvI4BRNY8aH-PnIYSBJXo-0BD08NzjylJab1enuDdyNC9pIsAQKJb7bo1YIrt6JUWbV7KgIDaASVcvR_6HP0kLqdaTiHEJiRKVv5surZM2GmysKPGdTMDejBtWy8s8eRhFGR5oFd3lCctcFFCj8r651fGFPSZbAx0k0Xz9fV6uH0XK5SjGPQxiCgS6SCN_kW2ADXBFKsQ2g22N_fdX0sh2tySV6nvtZiVQ6cWYw",
-        "Sec-Fetch-Dest": "empty",
-        "Sec-Fetch-Mode": "cors",
-        "Sec-Fetch-Site": "same-site",
-        "Sec-GPC": "1",
-        "Pragma": "no-cache",
-        "Cache-Control": "no-cache",
-        "referrer": "https://developer.spotify.com/",
-        "method": "GET",
-        "mode": "cors"
-    }
+    headers = get_headers(get_access_token())
+
     session = aiohttp.ClientSession(connector=aiohttp.TCPConnector(limit=100), headers=headers)
     success = False
     retries = 0
@@ -91,7 +95,7 @@ async def get_track_json(song: str):
 
 #%%
 file_names = []
-with ZipFile("dataset/corpus.zip", "r") as zp:
+with ZipFile("../dataset/corpus.zip", "r") as zp:
     file_names = zp.namelist()[1:]  # remove the current directory file: corpus/
 
 song_df = pd.DataFrame(file_names, columns=['filepath'])
@@ -130,20 +134,21 @@ async def fetch():
 
     print("DONE")
 
-asyncio.run(fetch())
+def main():
+    # asyncio.run(fetch())
 
 #%%
-api_data = pd.read_csv("dataset/api_data_5k.csv", names=["id", "artist", "title", "duration_ms", "explicit", "popularity", "release_date"])
-api_data['year'] = pd.to_datetime(api_data['release_date'], format='mixed', errors='coerce').dt.year
-temp = song_df.join(api_data)
+    api_data = pd.read_csv("dataset/api_data_5k.csv", names=["id", "artist", "title", "duration_ms", "explicit", "popularity", "release_date"])
+    api_data['year'] = pd.to_datetime(api_data['release_date'], format='mixed', errors='coerce').dt.year
+    temp = song_df.join(api_data)
 #%%
-temp.to_csv("dataset/corpus_5k_spotify.csv")
+    temp.to_csv("dataset/corpus_5k_spotify.csv")
 
 #%%
-plt.hist(temp['year'], range=[1933, 2023], bins=90, color="#1DB954")
-# histoyear = temp['year'].hist(bins=50)
-plt.xlim(1933, 2023)
-plt.title("Frequency of Songs by Release Year")
-plt.ylabel("Count")
-plt.xlabel("Release Year")
-plt.show()
+    plt.hist(temp['year'], range=[1933, 2023], bins=90, color="#1DB954")
+    # histoyear = temp['year'].hist(bins=50)
+    plt.xlim(1933, 2023)
+    plt.title("Frequency of Songs by Release Year")
+    plt.ylabel("Count")
+    plt.xlabel("Release Year")
+    plt.show()
