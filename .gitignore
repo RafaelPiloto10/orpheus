@@ -9,3 +9,4 @@ research/.cache
 corpus
 minified_corpus
 .DS_Store
+output*
