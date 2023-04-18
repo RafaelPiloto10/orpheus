@@ -9,4 +9,5 @@ research/.cache
 corpus
 minified_corpus
 .DS_Store
-output*
+coref_CoreNLP_minified_corpus
+output-*.zip
