@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Project Orpheus</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<h1>Project Orpheus</h1>
+<p>An interactive visualization of gender in music</p>
+<div class="container">
+  <div class="top">
+    <div id="progress-bar"></div>
+  </div>
+  <div class="vis-container">
+    <div class="pages">
+      <div class="page showing" id="vis-1">
+        <div id="vis-1-step-1" class="first-note">First notes here for vis 1</div>
+        <div id="vis-1-step-2" class="second-note">Second notes here for vis 1</div>
+      </div>
+      <div class="page" id="vis-2">
+        <div id="vis-2-step-1" class="first-note">First notes here for vis 2</div>
+        <div id="vis-2-step-2" class="second-note">Second notes here for vis 2</div>
+      </div>
+      <div class="page" id="vis-3">
+        <div id="vis-3-step-1" class="first-note">First notes here for vis 3</div>
+        <div id="vis-3-step-2" class="second-note">Second notes here for vis 3</div>
+      </div>
+      <div class="page" id="vis-4">
+        <div id="vis-4-step-1" class="first-note">First notes here for vis 4</div>
+        <div id="vis-4-step-2" class="second-note">Second notes here for vis 4</div>
+      </div>
+    </div>
+  </div>
+  <div id="vis-canvas"></div>
+  <nav class="navigation">
+    <button id="previous" href="#/" class="page-link"><</button>
+    <div id="pagination-nums">
+    </div>
+    <button id="next" href="#/" class="page-link">></button>
+  </nav>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="main.js"></script>
+</body>
+</html>
