@@ -1,86 +1,81 @@
-const WIDTH = d3.select('.container').node().clientWidth;
-const HEIGHT = d3.select('.container').node().clientHeight;
-const pageList = d3.select('.pages')
-const pageNumbers = d3.select('#pagination-nums')
-const listItems = pageList.selectAll('div.page')
-const prevButton = d3.select('#previous')
-const nextButton = d3.select('#next')
-let currentPage = 1
+// Content information
+const title = document.getElementsByClassName("page-title").item(0);
+const subtitle = document.getElementsByClassName("page-subtitle").item(0);
+const content = document.getElementsByClassName("content").item(0);
 
-const addPage = (pageNum) => {
-	pageNumbers.append('a')
-		.attr('href', '#/')
-		.attr('id', 'page-num-'+pageNum)
-		.classed('pagination-num', true)
-		.html(pageNum)
+// Navigation progress
+const progress = document.getElementsByClassName("progress-bar").item(0);
+const startTime = document.getElementsByClassName("start-time").item(0);
+const endTime = document.getElementsByClassName("end-time").item(0);
+
+// Navigation
+const play = document.getElementsByClassName("play").item(0);
+const back = document.getElementsByClassName("back").item(0);
+const next = document.getElementsByClassName("next").item(0);
+
+const view1 = () => {
+	title.textContent = "Overview of Data";
+	subtitle.textContent = "Overview of Data Subtitle";
+
+	content.innerHTML = `
+		<div class="w-full h-full flex justify-center items-center">
+			<p class="text-lg text-white">Overview of Data</p>
+		</div>
+	`;
 }
 
-window.addEventListener('load', () => {
-	for (let i = 1; i <= listItems.size(); i++) {
-		addPage(i)
+const introductionView = () => {
+	title.textContent = "Project Orpheus";
+	subtitle.textContent = "An analysis of gender on song lyrics";
+
+	content.innerHTML = `
+		<div class="w-full h-full flex justify-center items-center overflow-hidden">
+			<img class="w-64 h-64 object-contain" src="assets/orpheus.png"/>
+		</div>
+	`;
+}
+
+const endView = () => {
+	title.textContent = "Thank You";
+	subtitle.innerHTML = `<a href="https://github.com/RafaelPiloto10/orpheus" target="_blank" referrer="noreferrer">For more information checkout our GitHub</a>`
+}
+
+let views = [introductionView, view1, endView];
+let currentView = 0;
+
+const renderView = (view) => {
+	content.innerHTML = "";
+	view();
+}
+
+const render = () => {
+	renderView(views[currentView]);
+}
+
+const visitNext = () => {
+	if (currentView < views.length) {
+		currentView += 1;
+		startTime.textContent = `${currentView}:00`;
+		progress.style.width = `${(currentView / (views.length - 1)) * 100}%`;
+		render();
 	}
-	if (currentPage === 1) {
-		disableButton(prevButton)
-		d3.select('#page-num-1').classed('selected', true)
-	}
-	document.querySelectorAll(".pagination-num").forEach(numButton => {
-		const pageNum = Number(numButton.innerText)
-		numButton.addEventListener("click", () => {
-			updatePagination(pageNum)
-			toggleButton()
-		});
-	});
+}
 
-	document.querySelectorAll('.page-link').forEach(btn => {
-		btn.addEventListener('click', () => {
-			toggleButton()
-		})
-	})
-})
-
-const toggleButton = () => {
-	if (currentPage === 1) {
-		disableButton(prevButton)
-	} else {
-		enableButton(prevButton)
-	}
-
-	if (currentPage === listItems.size()) {
-		disableButton(nextButton)
-	} else {
-		enableButton(nextButton)
+const visitBack = () => {
+	if (currentView > 0) {
+		currentView -= 1;
+		startTime.textContent = `${currentView}:00`;
+		progress.style.width = `${(currentView / (views.length - 1)) * 100}%`;
+		render();
 	}
 }
 
-const disableButton = (button) => {
-	button.attr('disabled', true)
-	button.classed('disabled', true)
-	button.classed('hover', false)
+window.onload = () => {
+	startTime.textContent = `${currentView}:00`;
+	endTime.textContent = `${views.length - 1}:00`;
+	progress.style.width = `${currentView / views.length}%`;
+	render();
+
+	next.addEventListener("click", () => visitNext());
+	back.addEventListener("click", () => visitBack());
 }
-
-const enableButton = (button) => {
-	button.attr('disabled', null)
-	button.classed('disabled', false)
-	button.classed('hover', true)
-}
-
-const setCurrentPage = (pageNum) => {
-	currentPage = pageNum
-}
-
-
-const updatePagination = (updatedPageNum) => {
-	d3.select('#page-num-'+currentPage).classed('selected', false)
-	d3.select('#vis-'+currentPage).classed('showing', false)
-	setCurrentPage(updatedPageNum)
-	d3.select('#page-num-'+currentPage).classed('selected', true)
-	d3.select('#vis-'+currentPage).classed('showing', true)
-	event.preventDefault()
-}
-d3.select('#next').on('click', () => {
-	updatePagination(currentPage + 1)
-})
-
-d3.select('#previous').on('click', () => {
-	updatePagination(currentPage - 1)
-})
