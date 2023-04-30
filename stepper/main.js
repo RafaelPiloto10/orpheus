@@ -13,12 +13,49 @@ const play = document.getElementsByClassName("play").item(0);
 const back = document.getElementsByClassName("back").item(0);
 const next = document.getElementsByClassName("next").item(0);
 
+const green = "#1DB954";
+const black = "#191414";
+
+const layout = {
+	plot_bgcolor: black,
+	paper_bgcolor: black,
+	plot_fgcolor: green,
+	font: {
+		size: 10,
+		color: "white"
+	},
+};
+
+const view2 = () => {
+	title.textContent = "Music Genres"
+	subtitle.textContent = "Song genres after preprocessing"
+	content.innerHTML = `
+		<div class="view-2 w-full h-full flex justify-center items-center">
+			<div id="view-2-plt"/>
+		</div>
+	`;
+
+	let v = df["top_genre"].value_counts();
+
+	Plotly.newPlot("view-2-plt", [{
+		x: v.index_arr,
+		y: v.values,
+		type: "bar",
+		marker: { color: green },
+		transforms: [{
+			type: 'sort',
+			target: 'y',
+			order: 'descending'
+		}]
+	}], { ...layout });
+}
+
 const view1 = () => {
 
 	title.textContent = "Overview of Data";
 	subtitle.textContent = "Overview of Data Subtitle";
 
-	disableButtons(true, false); 
+	disableButtons(true, false);
 
 	const chart = `
 		<div class="w-full h-full flex justify-center items-center">
@@ -81,7 +118,7 @@ const endView = () => {
 	subtitle.innerHTML = `<a href="https://github.com/RafaelPiloto10/orpheus" target="_blank" referrer="noreferrer">For more information checkout our GitHub</a>`
 }
 
-let views = [introductionView, view1, endView];
+let views = [introductionView, view1, view2, endView];
 let currentView = 0;
 
 const renderView = (view) => {
@@ -89,7 +126,7 @@ const renderView = (view) => {
 	view();
 }
 
-const render = () => {
+const _render = () => {
 	renderView(views[currentView]);
 }
 
@@ -101,7 +138,7 @@ const visitNext = () => {
 		currentView += 1;
 		startTime.textContent = `${currentView}:00`;
 		progress.style.width = `${(currentView / (views.length - 1)) * 100}%`;
-		render();
+		_render();
 	}
 }
 
@@ -113,7 +150,7 @@ const visitBack = () => {
 		currentView -= 1;
 		startTime.textContent = `${currentView}:00`;
 		progress.style.width = `${(currentView / (views.length - 1)) * 100}%`;
-		render();
+		_render();
 	}
 }
 
@@ -129,7 +166,7 @@ const disableButtons = (f, b) => {
 		back.disabled = true;
 		const backIcon = back.getElementsByClassName("icon").item(0);
 		backIcon.style.stroke = "gray";
-		backIcon.classList.remove("hover:fill-white");	
+		backIcon.classList.remove("hover:fill-white");
 	}
 }
 
@@ -150,10 +187,11 @@ const enableButtons = (f, b) => {
 }
 
 window.onload = () => {
+	console.log();
 	startTime.textContent = `${currentView}:00`;
 	endTime.textContent = `${views.length - 1}:00`;
 	progress.style.width = `${currentView / views.length}%`;
-	render();
+	_render();
 
 	next.addEventListener("click", () => visitNext());
 	back.addEventListener("click", () => visitBack());
