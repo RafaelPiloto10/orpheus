@@ -49,7 +49,7 @@ const view1 = () => {
 
 const introductionView = () => {
 	title.textContent = "Project Orpheus";
-	subtitle.textContent = "An analysis of gender on song lyrics";
+	subtitle.textContent = "An analysis of gender in song lyrics";
 
 	content.innerHTML = `
 		<div class="w-full h-full flex flex-col justify-center items-center overflow-hidden gap-2">
