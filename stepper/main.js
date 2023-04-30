@@ -66,7 +66,7 @@ const introductionView = () => {
 				</div>
 
 				<div class="flex flex-row items-center justify-center gap-4 pb-8" >
-					<img class="w-16 h-16 object-cover rounded-full overflow-hidden" src="https://media.licdn.com/dms/image/C4D03AQF-P2kkatJY9A/profile-displayphoto-shrink_800_800/0/1641077123714?e=1687996800&v=beta&t=Lhbov3rewpqwbV8urwPEdcJKDbXF4lJnxDqlA3LkGcA" />
+					<img class="w-16 h-16 object-cover rounded-full overflow-hidden" src="assets/authors/albert.jpeg" />
 					<p class="text-white">
 						Albert Terc (<a class="underline text-green-500" href="https://github.com/albytterc" target="_blank">@albytterc</a>)
 					</p>
