@@ -11,6 +11,9 @@
 	<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon_io/favicon-32x32.png">
 	<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon_io/favicon-16x16.png">
 	<link rel="manifest" href="assets/favicon_io/site.webmanifest">
+
+	<!-- Read CSV files and interact as DataFrame -->
+    <script src="https://cdn.jsdelivr.net/npm/danfojs@0.1.1/dist/index.min.js"></script>
 </head>
 
 <body class="flex flex-col justify-center items-center overflow-x-hidden">
@@ -50,7 +53,7 @@
 			<!-- Skip back -->
 			<button class="back w-20 h-20 hover:bg-gray-500/10 rounded-full flex justify-center items-center">
 				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-					stroke="currentColor" class="w-12 h-12 hover:fill-white">
+					stroke="currentColor" class="icon w-12 h-12 hover:fill-white">
 					<path stroke-linecap="round" stroke-linejoin="round"
 						d="M21 16.811c0 .864-.933 1.405-1.683.977l-7.108-4.062a1.125 1.125 0 010-1.953l7.108-4.062A1.125 1.125 0 0121 8.688v8.123zM11.25 16.811c0 .864-.933 1.405-1.683.977l-7.108-4.062a1.125 1.125 0 010-1.953L9.567 7.71a1.125 1.125 0 011.683.977v8.123z" />
 				</svg>
@@ -59,7 +62,7 @@
 			<!-- Play/Pause  -->
 			<button class="play w-20 h-20 hover:bg-gray-500/10 rounded-full flex justify-center items-center">
 				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-					stroke="currentColor" class="w-16 h-16 hover:fill-white">
+					stroke="currentColor" class="icon w-16 h-16 hover:fill-white">
 					<path stroke-linecap="round" stroke-linejoin="round"
 						d="M21 7.5V18M15 7.5V18M3 16.811V8.69c0-.864.933-1.406 1.683-.977l7.108 4.061a1.125 1.125 0 010 1.954l-7.108 4.061A1.125 1.125 0 013 16.811z" />
 				</svg>
@@ -69,7 +72,7 @@
 			<!-- Skip Forward -->
 			<button class="next w-20 h-20 hover:bg-gray-500/10 rounded-full flex justify-center items-center">
 				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-					stroke="currentColor" class="w-12 h-12 hover:fill-white fill-none">
+					stroke="currentColor" class="icon w-12 h-12 hover:fill-white fill-none">
 					<path stroke-linecap="round" stroke-linejoin="round"
 						d="M3 8.688c0-.864.933-1.405 1.683-.977l7.108 4.062a1.125 1.125 0 010 1.953l-7.108 4.062A1.125 1.125 0 013 16.81V8.688zM12.75 8.688c0-.864.933-1.405 1.683-.977l7.108 4.062a1.125 1.125 0 010 1.953l-7.108 4.062a1.125 1.125 0 01-1.683-.977V8.688z" />
 				</svg>
