@@ -15,22 +15,23 @@
 	<!-- Plot -->
     <script src="https://cdn.plot.ly/plotly-2.20.0.min.js" charset="utf-8"></script>
 	<!-- Read CSV files and interact as DataFrame -->
-    <script src="https://cdn.jsdelivr.net/npm/danfojs@0.1.1/dist/index.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/danfojs@1.1.2/lib/bundle.js"></script>
 </head>
 
 <body class="flex flex-col justify-center items-center overflow-x-hidden">
 	<div class="h-[80%] w-4/5 flex flex-col">
 		<div class="grow w-full h-full p-2">
-			<div class="content w-full h-full">
+			<div class="content w-full h-full flex items-center justify-center">
+				<div class="loader"></div>
 			</div>
 		</div>
 
 		<div class="w-full flex flex-col items-center justify-center pb-8 box-border">
 			<p class="page-title text-2xl text-white">
-				Page Title
+				Loading song...
 			</p>
-			<p class="page-subtitle text-base text-gray-500">
-				Page Sub Title
+			<p class="page-subtitle text-base text-gray-500 text-center">
+				Project Orpheus
 			</p>
 
 		</div>
@@ -53,7 +54,7 @@
 		</div>
 		<div class="w-full pb-2 flex items-center justify-center text-white gap-4">
 			<!-- Skip back -->
-			<button class="back w-20 h-20 hover:bg-gray-500/10 rounded-full flex justify-center items-center">
+			<button disabled class="back w-20 h-20 hover:bg-gray-500/10 rounded-full flex justify-center items-center">
 				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
 					stroke="currentColor" class="icon w-12 h-12 hover:fill-white">
 					<path stroke-linecap="round" stroke-linejoin="round"
@@ -62,7 +63,7 @@
 			</button>
 
 			<!-- Play/Pause  -->
-			<button class="play w-20 h-20 hover:bg-gray-500/10 rounded-full flex justify-center items-center">
+			<button disabled class="play w-20 h-20 hover:bg-gray-500/10 rounded-full flex justify-center items-center">
 				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
 					stroke="currentColor" class="icon w-16 h-16 hover:fill-white">
 					<path stroke-linecap="round" stroke-linejoin="round"
@@ -72,7 +73,7 @@
 
 
 			<!-- Skip Forward -->
-			<button class="next w-20 h-20 hover:bg-gray-500/10 rounded-full flex justify-center items-center">
+			<button disabled class="next w-20 h-20 hover:bg-gray-500/10 rounded-full flex justify-center items-center">
 				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
 					stroke="currentColor" class="icon w-12 h-12 hover:fill-white fill-none">
 					<path stroke-linecap="round" stroke-linejoin="round"

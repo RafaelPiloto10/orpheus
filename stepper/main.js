@@ -21,24 +21,191 @@ const layout = {
 	paper_bgcolor: black,
 	plot_fgcolor: green,
 	font: {
-		size: 10,
+		size: 12,
 		color: "white"
 	},
 };
+
+const view5 = () => {
+	title.textContent = "We can also observe how gender is classified for subjects & objects in song lyrics."
+	subtitle.textContent = "It is interesting to see how there tend to be more male objects across time."
+	content.innerHTML = `
+		<div class="view w-full h-full flex justify-center items-center">
+			<div class="w-full h-full flex flex-row items-center justify-center">
+				<div class="w-1/2 h-full flex items-center justify-center">
+					<div class="w-full flex items-center justify-center" id="view-1-plt"></div>
+				</div>
+
+				<div class="w-1/2 h-full flex items-center justify-center">
+					<div class="w-full flex items-center justify-center" id="view-2-plt"></div>
+				</div>
+			</div>
+		</div>
+	`;
+
+	let s_g = merged_df.loc({ columns: ["year", "S Gender"] }).groupby(["year"]);
+	let s_x = [];
+	let s_ms = [];
+	let s_fs = [];
+
+	for (let [year, data] of Object.entries(s_g.colDict)) {
+		s_x.push(year);
+		let m = data["S Gender"].filter((x) => x === "MALE").length;
+		let f = data["S Gender"].filter((x) => x === "FEMALE").length;
+		s_ms.push(m);
+		s_fs.push(f);
+	}
+
+	let o_g = merged_df.loc({ columns: ["year", "O Gender"] }).groupby(["year"]);
+	let o_x = [];
+	let o_ms = [];
+	let o_fs = [];
+
+	for (let [year, data] of Object.entries(o_g.colDict)) {
+		o_x.push(year);
+		let m = data["O Gender"].filter((x) => x === "MALE").length;
+		let f = data["O Gender"].filter((x) => x === "FEMALE").length;
+		o_ms.push(m);
+		o_fs.push(f);
+	}
+
+	Plotly.newPlot("view-1-plt", [{
+		x: s_x,
+		y: s_ms,
+		type: "line",
+		marker: { color: green },
+		transforms: [{
+			type: 'sort',
+			target: 'x',
+			order: 'descending'
+		}],
+		name: "Male Refrences",
+	},
+	{
+		x: s_x,
+		y: s_fs,
+		type: "line",
+		marker: { color: "purple" },
+		transforms: [{
+			type: 'sort',
+			target: 'x',
+			order: 'descending'
+		}],
+		name: "Female Refrences",
+	}], { ...layout, title: "Subject Gender Across Time" });
+
+	Plotly.newPlot("view-2-plt", [{
+		x: o_x,
+		y: o_ms,
+		type: "line",
+		marker: { color: green },
+		transforms: [{
+			type: 'sort',
+			target: 'x',
+			order: 'descending'
+		}],
+		name: "Male Refrences",
+	},
+	{
+		x: o_x,
+		y: o_fs,
+		type: "line",
+		marker: { color: "purple" },
+		transforms: [{
+			type: 'sort',
+			target: 'x',
+			order: 'descending'
+		}],
+		name: "Female Refrences",
+	}], { ...layout, title: "Object Gender Across Time" });
+
+}
+
+const view4 = () => {
+	title.textContent = "Let's take a look at the average popularity of music genres"
+	subtitle.textContent = "Popularity is a metric reported by the Spotify API which reports how popular a given artist is at the time of data collection."
+	content.innerHTML = `
+		<div class="view w-full h-full flex justify-center items-center">
+			<div class="w-full h-full flex flex-row items-center justify-center">
+				<div class="w-1/2 h-full flex items-center justify-center">
+					<div class="w-full flex items-center justify-center" id="view-plt"></div>
+				</div>
+
+				<div class="w-1/2 h-full flex items-center justify-center">
+					<p class="text-base text-white text-center">It is interesting to note that some of the underrrepresented songs in our dataset have notably high popularity such as dance, jazz, and soul.</p>
+				</div>
+			</div>
+		</div>
+	`;
+
+	let pop_tensors = df.loc({ columns: ["top_genre", "popularity"] }).groupby(["top_genre"]).colDict;
+	let x = [];
+	let y = [];
+	for (let [genre, popularity] of Object.entries(pop_tensors)) {
+		let m = popularity.popularity.reduce((partialSum, a) => partialSum + a, 0) / popularity.popularity.length;
+		x.push(genre || "Other");
+		y.push(m);
+	}
+
+	Plotly.newPlot("view-plt", [{
+		x: x,
+		y: y,
+		type: "bar",
+		marker: { color: green },
+		transforms: [{
+			type: 'sort',
+			target: 'y',
+			order: 'descending'
+		}]
+	}], { ...layout });
+
+}
+
+const view3 = () => {
+	title.textContent = "Let's take a look at the average popularity of music genres"
+	subtitle.textContent = "Popularity is a metric reported by the Spotify API which reports how popular a given artist is at the time of data collection."
+	content.innerHTML = `
+		<div class="view w-full h-full flex justify-center items-center">
+			<div id="view-plt"/>
+		</div>
+	`;
+
+	let pop_tensors = df.loc({ columns: ["top_genre", "popularity"] }).groupby(["top_genre"]).colDict;
+	let x = [];
+	let y = [];
+	for (let [genre, popularity] of Object.entries(pop_tensors)) {
+		let m = popularity.popularity.reduce((partialSum, a) => partialSum + a, 0) / popularity.popularity.length;
+		x.push(genre || "other");
+		y.push(m);
+	}
+
+	Plotly.newPlot("view-plt", [{
+		x: x,
+		y: y,
+		type: "bar",
+		marker: { color: green },
+		transforms: [{
+			type: 'sort',
+			target: 'y',
+			order: 'descending'
+		}]
+	}], { ...layout });
+
+}
 
 const view2 = () => {
 	title.textContent = "Music Genres"
 	subtitle.textContent = "Song genres after preprocessing"
 	content.innerHTML = `
-		<div class="view-2 w-full h-full flex justify-center items-center">
-			<div id="view-2-plt"/>
+		<div class="w-full h-full flex justify-center items-center">
+			<div id="view-plt"/>
 		</div>
 	`;
 
-	let v = df["top_genre"].value_counts();
+	let v = df["top_genre"].valueCounts();
 
-	Plotly.newPlot("view-2-plt", [{
-		x: v.index_arr,
+	Plotly.newPlot("view-plt", [{
+		x: v.index.map((x) => x == "undefined" ? "other" : x),
 		y: v.values,
 		type: "bar",
 		marker: { color: green },
@@ -115,10 +282,10 @@ const introductionView = () => {
 
 const endView = () => {
 	title.textContent = "Thank You";
-	subtitle.innerHTML = `<a href="https://github.com/RafaelPiloto10/orpheus" target="_blank" referrer="noreferrer">For more information checkout our GitHub</a>`
+	subtitle.innerHTML = `<a href="https://github.com/RafaelPiloto10/orpheus" target="_blank" referrer="noreferrer">For more information checkout our <span class="text-green-500 underline">GitHub</span></a>`
 }
 
-let views = [introductionView, view1, view2, endView];
+let views = [introductionView, view1, view2, view3, view4, view5, endView];
 let currentView = 0;
 
 const renderView = (view) => {
@@ -186,8 +353,9 @@ const enableButtons = (f, b) => {
 	}
 }
 
-window.onload = () => {
-	console.log();
+window.onload = async () => {
+	await loadData();
+	enableButtons(true, true);
 	startTime.textContent = `${currentView}:00`;
 	endTime.textContent = `${views.length - 1}:00`;
 	progress.style.width = `${currentView / views.length}%`;
