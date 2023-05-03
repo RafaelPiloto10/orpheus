@@ -26,6 +26,40 @@ const layout = {
 	},
 };
 
+const animationConfig = {
+	transition: {
+		duration: 500,
+		easing: "cubic-in-out"
+	},
+	frame: {
+		duration: 500
+	}
+};
+
+// gender counts by genre plot
+const view6 = () => {
+	title.textContent = 'Here is how gender appears in different genres';
+	subtitle.textContent = "There tend to be more male subjects mentioned overall."
+	content.innerHTML = `
+		<div class="view w-full h-full flex justify-center items-center">
+			<div id="view-plt"/>
+		</div>
+	`;
+
+	const unique_tracks = svo['Document ID'].dropDuplicates()
+	// gender_by_genre = unique_tracks.groupby(by=['top_genre'], as_index=False)[['S Gender']].value_counts()
+	//
+	// genre_ordered = gender_by_genre.groupby(by='top_genre').agg('sum').sort_values(by="count", ascending=True).index
+
+	console.log("df")
+	console.log(df)
+	console.log("merged df")
+	console.log(merged_df)
+	console.log("svo")
+	console.log(svo)
+
+};
+
 const view5 = () => {
 	title.textContent = "We can also observe how gender is classified for subjects & objects in song lyrics."
 	subtitle.textContent = "It is interesting to see how there tend to be more male objects across time."
@@ -79,7 +113,7 @@ const view5 = () => {
 			target: 'x',
 			order: 'descending'
 		}],
-		name: "Male Refrences",
+		name: "Male References",
 	},
 	{
 		x: s_x,
@@ -91,7 +125,7 @@ const view5 = () => {
 			target: 'x',
 			order: 'descending'
 		}],
-		name: "Female Refrences",
+		name: "Female References",
 	}], { ...layout, title: "Subject Gender Across Time" });
 
 	Plotly.newPlot("view-2-plt", [{
@@ -104,7 +138,7 @@ const view5 = () => {
 			target: 'x',
 			order: 'descending'
 		}],
-		name: "Male Refrences",
+		name: "Male References",
 	},
 	{
 		x: o_x,
@@ -116,7 +150,7 @@ const view5 = () => {
 			target: 'x',
 			order: 'descending'
 		}],
-		name: "Female Refrences",
+		name: "Female References",
 	}], { ...layout, title: "Object Gender Across Time" });
 
 }
@@ -132,7 +166,7 @@ const view4 = () => {
 				</div>
 
 				<div class="w-1/2 h-full flex items-center justify-center">
-					<p class="text-base text-white text-center">It is interesting to note that some of the underrrepresented songs in our dataset have notably high popularity such as dance, jazz, and soul.</p>
+					<p class="text-base text-white text-center">It is interesting to note that some of the underrepresented songs in our dataset have notably high popularity such as dance, jazz, and soul.</p>
 				</div>
 			</div>
 		</div>
@@ -179,17 +213,24 @@ const view3 = () => {
 		y.push(m);
 	}
 
+	const finalData = [{
+		x: x,
+		y: y
+	}]
+
 	Plotly.newPlot("view-plt", [{
 		x: x,
-		y: y,
+		y: Array(x.length).fill(0),
 		type: "bar",
 		marker: { color: green },
 		transforms: [{
 			type: 'sort',
 			target: 'y',
 			order: 'descending'
-		}]
-	}], { ...layout });
+		}],
+	}], { ...layout, xaxis: {'visible': false}, yaxis:  {range: [0, 50]}});
+
+	Plotly.animate("view-plt", {data: finalData, layout: {xaxis: {'visible': true}}}, {...animationConfig});
 
 }
 
@@ -202,19 +243,27 @@ const view2 = () => {
 		</div>
 	`;
 
-	let v = df["top_genre"].valueCounts();
+	let v = df["top_genre"].valueCounts().sortValues({'ascending': false});
 
 	Plotly.newPlot("view-plt", [{
 		x: v.index.map((x) => x == "undefined" ? "other" : x),
-		y: v.values,
-		type: "bar",
+		y: Array(v.size).fill(0),
+		type: 'bar',
 		marker: { color: green },
 		transforms: [{
 			type: 'sort',
 			target: 'y',
 			order: 'descending'
 		}]
-	}], { ...layout });
+	}], {xaxis: {'visible': false}, yaxis: {range: [0, 3000]}, ...layout});
+
+	const finalData = [{
+			x: v.index.map((x) => x == "undefined" ? "other" : x),
+			y: v.values
+	}];
+
+
+	Plotly.animate("view-plt", {data: finalData, layout: {xaxis: {'visible': true}}}, {...animationConfig});
 }
 
 const view1 = () => {
@@ -240,7 +289,7 @@ const view1 = () => {
 			</div>
 
 			<div class="pb-8">
-				<p class="text-white animate-bounce">(click to continue)</p>
+				<p class="text-white animate-bounce">(click here to continue)</p>
 			</div>
 		</div>
 	`;
@@ -282,10 +331,10 @@ const introductionView = () => {
 
 const endView = () => {
 	title.textContent = "Thank You";
-	subtitle.innerHTML = `<a href="https://github.com/RafaelPiloto10/orpheus" target="_blank" referrer="noreferrer">For more information checkout our <span class="text-green-500 underline">GitHub</span></a>`
+	subtitle.innerHTML = `<a href="https://github.com/RafaelPiloto10/orpheus" target="_blank" referrer="noreferrer">For more information, check out our <span class="text-green-500 underline">GitHub</span></a>`
 }
 
-let views = [introductionView, view1, view2, view3, view4, view5, endView];
+let views = [introductionView, view1, view2, view3, view4, view5, view6, endView];
 let currentView = 0;
 
 const renderView = (view) => {
