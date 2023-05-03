@@ -3,6 +3,7 @@ import metadata from './assets/metadata_genres.json' assert {type: 'json'};
 async function loadData() {
 	var df = new dfd.DataFrame(metadata["results"]);
 	var svo = await dfd.readCSV("./assets/svo.csv");
+	var merged_df = await dfd.readCSV("./assets/merged_df.csv");
 
 	const buckets = {
 		"worship": ["worship", "christian", "gospel"],
@@ -63,30 +64,6 @@ async function loadData() {
 	let rm = `=hyperlink("C:\\Users\\rpilo\\Downloads\\orpheus\\dataset\\output\\coref_CoreNLP_minified_corpus\\coref\\`;
 	let songPaths = svo["Document"].values.map((x) => x.substring(rm.length, x.length - 2));
 	svo.addColumn("song_path", songPaths, { inplace: true });
-
-	// merge  df and svo
-	var merged_df = []
-	for (let row of df.$data) {
-		let song_path = row[1];
-		let svo_res = svo.$data.filter((x) => {
-			if (x.length != 10) return false;
-			let sp = x[9];
-			if (sp.includes(song_path)) {
-				return true;
-			}
-			return false;
-		});
-
-		for (let s of svo_res) {
-			s.pop();
-			let merged = row.concat(s);
-			merged_df.push(merged);
-		}
-	}
-
-	let merged_cols = df.columns.concat(svo.columns);
-	merged_cols.pop();
-	merged_df = new dfd.DataFrame(merged_df, { columns: merged_cols });
 
 	window.df = df;
 	window.svo = svo;

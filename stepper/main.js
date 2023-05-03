@@ -36,6 +36,18 @@ const animationConfig = {
 	}
 };
 
+const viewTable = () => {
+	title.textContent = "Verbs that appear with each gender, by genre";
+	subtitle.textContent = "Note that these are single instances rather than aggregated statistics; however, their frequencies may be greater than one.";
+
+	content.innerHTML = `
+		<div class="view w-full h-full flex justify-center items-center">
+			<img class="w-128 h-128 object-contain" src="assets/views/viewTable/overview.png" />
+		</div>
+
+	`;
+};
+
 // gender counts by genre plot
 const view6 = () => {
 	title.textContent = 'Here is how gender appears in different genres';
@@ -228,9 +240,9 @@ const view3 = () => {
 			target: 'y',
 			order: 'descending'
 		}],
-	}], { ...layout, xaxis: {'visible': false}, yaxis:  {range: [0, 50]}});
+	}], { ...layout, xaxis: { 'visible': false }, yaxis: { range: [0, 50] } });
 
-	Plotly.animate("view-plt", {data: finalData, layout: {xaxis: {'visible': true}}}, {...animationConfig});
+	Plotly.animate("view-plt", { data: finalData, layout: { xaxis: { 'visible': true } } }, { ...animationConfig });
 
 }
 
@@ -243,7 +255,7 @@ const view2 = () => {
 		</div>
 	`;
 
-	let v = df["top_genre"].valueCounts().sortValues({'ascending': false});
+	let v = df["top_genre"].valueCounts().sortValues({ 'ascending': false });
 
 	Plotly.newPlot("view-plt", [{
 		x: v.index.map((x) => x == "undefined" ? "other" : x),
@@ -255,15 +267,15 @@ const view2 = () => {
 			target: 'y',
 			order: 'descending'
 		}]
-	}], {xaxis: {'visible': false}, yaxis: {range: [0, 3000]}, ...layout});
+	}], { xaxis: { 'visible': false }, yaxis: { range: [0, 3000] }, ...layout });
 
 	const finalData = [{
-			x: v.index.map((x) => x == "undefined" ? "other" : x),
-			y: v.values
+		x: v.index.map((x) => x == "undefined" ? "other" : x),
+		y: v.values
 	}];
 
 
-	Plotly.animate("view-plt", {data: finalData, layout: {xaxis: {'visible': true}}}, {...animationConfig});
+	Plotly.animate("view-plt", { data: finalData, layout: { xaxis: { 'visible': true } } }, { ...animationConfig });
 }
 
 const view1 = () => {
@@ -334,7 +346,7 @@ const endView = () => {
 	subtitle.innerHTML = `<a href="https://github.com/RafaelPiloto10/orpheus" target="_blank" referrer="noreferrer">For more information, check out our <span class="text-green-500 underline">GitHub</span></a>`
 }
 
-let views = [introductionView, view1, view2, view3, view4, view5, view6, endView];
+let views = [viewTable, introductionView, view1, view2, view3, view4, view5, view6, endView];
 let currentView = 0;
 
 const renderView = (view) => {
