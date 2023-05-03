@@ -46,8 +46,11 @@ const view6 = () => {
 		</div>
 	`;
 
-	const unique_tracks = svo['Document ID'].dropDuplicates()
-	// gender_by_genre = unique_tracks.groupby(by=['top_genre'], as_index=False)[['S Gender']].value_counts()
+	const uniqueRows = merged_df['Document ID'].dropDuplicates();
+	const svoData = merged_df.loc({rows: uniqueRows});
+	console.log(svoData.groupby(['top_genre'])['S Gender'].valueCounts());
+
+	// const gender_by_genre = unique_tracks.groupby(by=['top_genre'], as_index=False)[['S Gender']].value_counts()
 	//
 	// genre_ordered = gender_by_genre.groupby(by='top_genre').agg('sum').sort_values(by="count", ascending=True).index
 
