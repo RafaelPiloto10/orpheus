@@ -36,15 +36,139 @@ const animationConfig = {
 	}
 };
 
+const closeReading3 = () => {
+	title.textContent = "Close Reading: Hood Mentality";
+	subtitle.textContent = "Ice Cube (2008)";
+
+	content.innerHTML = `
+		<div class="view w-full h-full flex justify-center items-center">
+			<div class="flex items-center justify-center">
+				<div class="w-full h-full flex flex-row gap-8">
+					<div class="flex flex-col">
+						<p class="w-full text-green-500 text-2xl">Rap</p>
+						<br />
+						<p class="text-white w-full justify-start">
+							F*** school, n****, I'ma be a dope dealer,<br/>
+							I'ma be a killer, yup a urban guerrilla,<br/>
+							I'ma stack strilla, yeah, buy me a villa,<br/>
+							Sell a five-oh to my Auntie Priscilla,<br/>
+							I don't give a f*** that she look like thriller,<br/>
+							Hit that shit, one more time and f*** around and <span class="text-purple-500">kill</span> her.<br/>
+							Cause I got the heart of a Pittsburgh Steeler,<br/>
+							Black n****, draped in gold with a nine milla,<br/>
+						</p>
+					</div>
+					<div class="grow h-full flex items-start justify-self-end">
+						<p class="text-right text-white">
+							<span class="text-2xl text-green-500">Ice Cube Hood Mentality (2008)</span> <br/>
+							<br />
+							Rap music in, general during our close reading,<br/>
+							showed very intense language. In Ice Cube's <br/>
+							song, Hood Mentality, he recounts the mentality<br/>
+							of a figure growing up in the "hood". The figure <br/>
+							is a described to as a street gangster who makes <br/>
+							no exceptions for who is disposable because they <br/>
+							have a heart of a "Pittsburgh Steeler". The roles <br/>
+							of gender here seem to indicate that the male gangster <br/>
+							is cold blooded and "tougher" while the female is fragile<br/>
+							and disposable.
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	`;
+};
+
+const closeReading2 = () => {
+	title.textContent = "Close Reading: Hot Shot";
+	subtitle.textContent = "Cliff Richard (1979)";
+
+	content.innerHTML = `
+		<div class="view w-full h-full flex justify-center items-center">
+			<div class="flex items-center justify-center">
+				<div class="w-full h-full flex flex-row gap-8">
+					<div class="flex flex-col">
+						<p class="w-full text-green-500 text-2xl">Pop</p>
+						<br />
+						<p class="text-white w-full justify-start">
+							A faded picture on the mantel shelf,<br/>
+							My older brother looks like myself,<br/>
+							Remember Donny dated Susie,<br/>
+							And Susie rated johnny,<br/>
+							Johnny's into Susie, <br/> 
+							But Susie's into Ronnie, <br/> 
+							Ronnie <span class="text-purple-500">waits for</span> Louie, <br/> 
+							But Louie's singing Louie-Lou-i <br />
+						</p>
+					</div>
+					<div class="grow h-full flex items-start justify-self-end">
+						<p class="text-right text-white">
+							<span class="text-2xl text-green-500">Cliff Richard | Hot Shot (1979)</span> <br/>
+							<br />
+							In this example, we see that the SVO parser <br/>
+							incorrectly classified "waits for" as female. Ronnie who <br/>
+							appears to be a male figure is in the middle of a love "triangle." <br/>
+							Ronnie is waiting for Louie, who is represented here as <br/>
+							a more independent figure who is not into anyone. <br />
+							In more "traditional" tales, the male figure <br />
+							normally waits for the female, but the difference <br />
+							here is that Cliff portrays the female as a free figure <br />	
+							not even interested in love.<br />	
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	`;
+};
+
+const closeReading1 = () => {
+	title.textContent = "Close Reading: Go Go Round";
+	subtitle.textContent = "Gordon Lightfoot (1967)";
+
+	content.innerHTML = `
+		<div class="view w-full h-full flex justify-center items-center">
+			<div class="flex items-center justify-center">
+				<div class="w-full h-full flex flex-row gap-8">
+					<div class="w-full h-full flex flex-col">
+						<p class="text-green-500 text-2xl">Rock</p>
+						<br />
+						<p class="text-white">
+							Alone upon the sidewalks of despair, 'twas there she wandered with her<br />
+							suitcase in her hand.  <br />
+							Her fate she pondered, only a go-go girl in love with someone who didn't care.  <br />
+							She met him on a night so rare when her friends were there and the band was<br />
+							grooving.  <br />
+							When he gave a glance that said how much he would like to meet her,  <br />
+							How was she to know at the time he would <span class="text-green-500">mistreat</span> her?<br />
+						</p>
+					</div>
+					<div class="grow w-full h-full flex items-start justify-self-end">
+						<p class="w-full text-right text-white">
+							<span class="text-2xl text-green-500">Gordon Lightfoot | Go Go Round (1967)</span> <br/>
+							<br />
+							Go-go dancers are dancers who are employed to entertain crowds at nightclubs or other venues where music is played. 
+							Gordon describes a "go-go girl" who falls in love with a man who does not care for her. <br/>
+							Ultimately, leaving her by the end of the night, Gordon describes the male figure as cold and distant. <br/>
+							Here, the male is viewed negatively but also free spirited and unattached. <br/>
+							The female is viewed more positively and potentially more traditional and attached.
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	`;
+};
+
 const viewTable = () => {
 	title.textContent = "Verbs that appear with each gender, by genre";
 	subtitle.textContent = "Note that these are single instances rather than aggregated statistics; however, their frequencies may be greater than one.";
 
 	content.innerHTML = `
-		<div class="view w-full h-full flex justify-center items-center">
-			<img class="w-128 h-128 object-contain" src="assets/views/viewTable/overview.png" />
+		<div class="view flex overflow-hidden">
+			<img class="w-[1000px] object-contain overflow-hidden" src="assets/views/viewTable/overview.png" />
 		</div>
-
 	`;
 };
 
@@ -381,7 +505,7 @@ const endView = () => {
 	subtitle.innerHTML = `<a href="https://github.com/RafaelPiloto10/orpheus" target="_blank" referrer="noreferrer">For more information, check out our <span class="text-green-500 underline">GitHub</span></a>`
 }
 
-let views = [introductionView, view1, view2, view3, view4, view5, view6, viewTable, endView];
+let views = [introductionView, view1, view2, view3, view4, view5, view6, viewTable, closeReading1, closeReading2, closeReading3, endView];
 let currentView = 0;
 
 const renderView = (view) => {
@@ -397,7 +521,7 @@ const visitNext = () => {
 	// enables both buttons in case they were disabled on the previous view
 	enableButtons(true, true);
 
-	if (currentView < views.length) {
+	if (currentView < views.length - 1) {
 		currentView += 1;
 		startTime.textContent = `${currentView}:00`;
 		progress.style.width = `${(currentView / (views.length - 1)) * 100}%`;
