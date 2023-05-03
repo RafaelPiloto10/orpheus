@@ -58,21 +58,53 @@ const view6 = () => {
 		</div>
 	`;
 
-	const uniqueRows = merged_df['Document ID'].dropDuplicates();
-	const svoData = merged_df.loc({rows: uniqueRows});
-	console.log(svoData.groupby(['top_genre'])['S Gender'].valueCounts());
+	const uniqueRows = merged_df['Document ID'].dropDuplicates().index;
+	const svoData = merged_df.iloc({rows: uniqueRows});
 
-	// const gender_by_genre = unique_tracks.groupby(by=['top_genre'], as_index=False)[['S Gender']].value_counts()
-	//
-	// genre_ordered = gender_by_genre.groupby(by='top_genre').agg('sum').sort_values(by="count", ascending=True).index
+	const genreDict = svoData.groupby(['top_genre']).colDict;
+	let x = [];
+	let y = [];
+	let genreCounts = {};
+	for (let [genre, values] of Object.entries(genreDict)) {
+		let gender = new dfd.Series(values['S Gender']).valueCounts();
+		let genderLabels = gender.$index
+		let genderCounts = gender.$data
+		genreCounts[genre] = {};
+		for (let i = 0; i < genderLabels.length; i++) {
+			genreCounts[genre][genderLabels[i]] = genderCounts[i]
+		}
+	}
 
-	console.log("df")
-	console.log(df)
-	console.log("merged df")
-	console.log(merged_df)
-	console.log("svo")
-	console.log(svo)
+	const genreList = Object.keys(genreDict)
 
+	let maleTrace = {
+		x: genreList,
+		y: Object.values(genreCounts).map(d => d['MALE'] || 0),
+		name: 'Male',
+		marker: {'color': green},
+		type: 'bar',
+		transforms: [{
+			'type': 'sort',
+			'target': 'x',
+			'order': 'ascending'
+		}]
+	}
+
+	let femaleTrace = {
+		x: genreList,
+		y: Object.values(genreCounts).map(d => d['FEMALE'] || 0),
+		name: 'Female',
+		marker: {'color': 'purple'},
+		type: 'bar',
+		transforms: [{
+			'type': 'sort',
+			'target': 'x',
+			'order': 'ascending'
+		}]
+	}
+
+	const data = [maleTrace, femaleTrace]
+	Plotly.newPlot('view-plt', data, layout)
 };
 
 const view5 = () => {
@@ -349,7 +381,7 @@ const endView = () => {
 	subtitle.innerHTML = `<a href="https://github.com/RafaelPiloto10/orpheus" target="_blank" referrer="noreferrer">For more information, check out our <span class="text-green-500 underline">GitHub</span></a>`
 }
 
-let views = [viewTable, introductionView, view1, view2, view3, view4, view5, view6, endView];
+let views = [introductionView, view1, view2, view3, view4, view5, view6, viewTable, endView];
 let currentView = 0;
 
 const renderView = (view) => {
