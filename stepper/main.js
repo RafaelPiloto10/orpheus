@@ -440,7 +440,7 @@ const view2 = () => {
 const view1 = () => {
 
 	title.textContent = "Overview of Data";
-	subtitle.textContent = "Overview of Data Subtitle";
+	subtitle.textContent = "We initially found our dataset on Kaggle, but had to limit the total size of our data due to computation limitations.";
 
 	disableButtons(true, false);
 
