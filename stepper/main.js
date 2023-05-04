@@ -23,7 +23,7 @@ const layout = {
 	font: {
 		size: 12,
 		color: "white"
-	},
+	}
 };
 
 const animationConfig = {
@@ -167,7 +167,7 @@ const viewTable = () => {
 
 	content.innerHTML = `
 		<div class="view flex overflow-hidden">
-			<img class="w-[1000px] object-contain overflow-hidden" src="assets/views/viewTable/overview.png" />
+			<img class="w-[800px] object-contain overflow-hidden" src="assets/views/viewTable/overview.png" />
 		</div>
 	`;
 };
@@ -175,7 +175,7 @@ const viewTable = () => {
 // gender counts by genre plot
 const view6 = () => {
 	title.textContent = 'Here is how gender appears in different genres';
-	subtitle.textContent = "There tend to be more male subjects mentioned overall."
+	subtitle.textContent = "There tend to be more male subjects mentioned overall.";
 	content.innerHTML = `
 		<div class="view w-full h-full flex justify-center items-center">
 			<div id="view-plt"/>
@@ -191,19 +191,19 @@ const view6 = () => {
 	let genreCounts = {};
 	for (let [genre, values] of Object.entries(genreDict)) {
 		let gender = new dfd.Series(values['S Gender']).valueCounts();
-		let genderLabels = gender.$index
-		let genderCounts = gender.$data
+		let genderLabels = gender.$index;
+		let genderCounts = gender.$data;
 		genreCounts[genre] = {};
 		for (let i = 0; i < genderLabels.length; i++) {
-			genreCounts[genre][genderLabels[i]] = genderCounts[i]
+			genreCounts[genre][genderLabels[i]] = genderCounts[i];
 		}
 	}
 
-	const genreList = Object.keys(genreDict)
+	const genreList = Object.keys(genreDict);
 
 	let maleTrace = {
 		x: genreList,
-		y: Object.values(genreCounts).map(d => d['MALE'] || 0),
+		y: Array(Object.values(genreCounts).length).fill(0),
 		name: 'Male',
 		marker: {'color': green},
 		type: 'bar',
@@ -212,11 +212,11 @@ const view6 = () => {
 			'target': 'x',
 			'order': 'ascending'
 		}]
-	}
+	};
 
 	let femaleTrace = {
 		x: genreList,
-		y: Object.values(genreCounts).map(d => d['FEMALE'] || 0),
+		y: Array(Object.values(genreCounts).length).fill(0),
 		name: 'Female',
 		marker: {'color': 'purple'},
 		type: 'bar',
@@ -225,15 +225,26 @@ const view6 = () => {
 			'target': 'x',
 			'order': 'ascending'
 		}]
+	};
+
+	const maleFinalData = {
+		x: genreList,
+		y: Object.values(genreCounts).map(d => d['MALE'] || 0),
 	}
 
-	const data = [maleTrace, femaleTrace]
-	Plotly.newPlot('view-plt', data, layout)
+	const femaleFinalData = {
+		x: genreList,
+		y: Object.values(genreCounts).map(d => d['FEMALE'] || 0),
+	}
+
+	const data = [maleTrace, femaleTrace];
+	Plotly.newPlot('view-plt', data, {...layout, yaxis: {range: [0, 20]}});
+	Plotly.animate('view-plt', {data: [maleFinalData, femaleFinalData]}, {...animationConfig})
 };
 
 const view5 = () => {
-	title.textContent = "We can also observe how gender is classified for subjects & objects in song lyrics."
-	subtitle.textContent = "It is interesting to see how there tend to be more male objects across time."
+	title.textContent = "We can also observe how gender is classified for subjects & objects in song lyrics.";
+	subtitle.textContent = "It is interesting to see how there tend to be more male objects across time.";
 	content.innerHTML = `
 		<div class="view w-full h-full flex justify-center items-center">
 			<div class="w-full h-full flex flex-row items-center justify-center">
@@ -248,7 +259,7 @@ const view5 = () => {
 		</div>
 	`;
 
-	let s_g = merged_df.loc({ columns: ["year", "S Gender"] }).groupby(["year"]);
+	let s_g = merged_df.loc({columns: ["year", "S Gender"]}).groupby(["year"]);
 	let s_x = [];
 	let s_ms = [];
 	let s_fs = [];
@@ -261,7 +272,7 @@ const view5 = () => {
 		s_fs.push(f);
 	}
 
-	let o_g = merged_df.loc({ columns: ["year", "O Gender"] }).groupby(["year"]);
+	let o_g = merged_df.loc({columns: ["year", "O Gender"]}).groupby(["year"]);
 	let o_x = [];
 	let o_ms = [];
 	let o_fs = [];
@@ -275,60 +286,115 @@ const view5 = () => {
 	}
 
 	Plotly.newPlot("view-1-plt", [{
-		x: s_x,
-		y: s_ms,
+		x: [],
+		y: [],
 		type: "line",
-		marker: { color: green },
+		marker: {color: green},
 		transforms: [{
 			type: 'sort',
 			target: 'x',
-			order: 'descending'
+			order: 'ascending'
 		}],
-		name: "Male References",
+		name: "Male References"
 	},
-	{
-		x: s_x,
-		y: s_fs,
-		type: "line",
-		marker: { color: "purple" },
-		transforms: [{
-			type: 'sort',
-			target: 'x',
-			order: 'descending'
-		}],
-		name: "Female References",
-	}], { ...layout, title: "Subject Gender Across Time" });
+		{
+			x: s_x,
+			y: Array(s_fs.length).fill(0),
+			type: "line",
+			marker: {color: "purple"},
+			transforms: [{
+				type: 'sort',
+				target: 'x',
+				order: 'ascending'
+			}],
+			name: "Female References"
+		}], {...layout, title: "Subject Gender Across Time", yaxis: {range: [0, 12]}});
 
 	Plotly.newPlot("view-2-plt", [{
 		x: o_x,
-		y: o_ms,
+		y: Array(o_ms.length).fill(0),
 		type: "line",
-		marker: { color: green },
+		marker: {color: green},
 		transforms: [{
 			type: 'sort',
 			target: 'x',
-			order: 'descending'
+			order: 'ascending'
 		}],
-		name: "Male References",
+		name: "Male References"
 	},
-	{
-		x: o_x,
-		y: o_fs,
-		type: "line",
-		marker: { color: "purple" },
-		transforms: [{
-			type: 'sort',
-			target: 'x',
-			order: 'descending'
-		}],
-		name: "Female References",
-	}], { ...layout, title: "Object Gender Across Time" });
+		{
+			x: o_x,
+			y: Array(o_fs.length).fill(0),
+			type: "line",
+			marker: {color: "purple"},
+			transforms: [{
+				type: 'sort',
+				target: 'x',
+				order: 'ascending'
+			}],
+			name: "Female References"
+		}], {...layout, title: "Object Gender Across Time", yaxis: {range: [0, 12]}});
 
-}
+
+	const lineAnimationConfig = {
+		transition: {
+			duration: 0
+		},
+		frame: {
+			duration: 0,
+			redraw: false
+		}
+	};
+	const update = (i) => {
+		const finalDataSubject = [{
+			x: s_x.slice(0,i),
+			y: s_ms.slice(0,i)
+		}, {
+			x: s_x.slice(0,i),
+			y: s_fs.slice(0,i)
+		}];
+		const larger = Math.max(o_x.length, s_x.length)
+		const j = Math.min(i, o_x.length)
+		const finalDataObject = [{
+			x: o_x.slice(0,j),
+			y: o_ms.slice(0,j)
+		}, {
+			x: o_x.slice(0,j),
+			y: o_fs.slice(0,j)
+		}];
+		Plotly.animate('view-1-plt', {data: finalDataSubject}, {...lineAnimationConfig});
+		Plotly.animate('view-2-plt', {data: finalDataObject}, {...lineAnimationConfig});
+		const next = Math.min(i+1, s_x.length)
+		if (i != next) {
+			requestAnimationFrame(() => update(next));
+		}
+	};
+
+	requestAnimationFrame(() => update(0));
+
+	const finalDataSubject = [{
+		x: s_x,
+		y: s_ms
+	}, {
+		x: s_x,
+		y: s_fs
+	}];
+
+	const finalDataObject = [{
+		x: o_x,
+		y: o_ms
+	}, {
+		x: o_x,
+		y: o_fs
+	}];
+
+
+	Plotly.animate('view-2-plt', {data: finalDataObject}, {...lineAnimationConfig});
+};
 
 const view4 = () => {
-	title.textContent = "Let's take a look at the average popularity of music genres"
-	subtitle.textContent = "Popularity is a metric reported by the Spotify API which reports how popular a given artist is at the time of data collection."
+	title.textContent = "Let's take a look at the average popularity of music genres";
+	subtitle.textContent = "Popularity is a metric reported by the Spotify API which reports how popular a given artist is at the time of data collection.";
 	content.innerHTML = `
 		<div class="view w-full h-full flex justify-center items-center">
 			<div class="w-full h-full flex flex-row items-center justify-center">
@@ -343,7 +409,7 @@ const view4 = () => {
 		</div>
 	`;
 
-	let pop_tensors = df.loc({ columns: ["top_genre", "popularity"] }).groupby(["top_genre"]).colDict;
+	let pop_tensors = df.loc({columns: ["top_genre", "popularity"]}).groupby(["top_genre"]).colDict;
 	let x = [];
 	let y = [];
 	for (let [genre, popularity] of Object.entries(pop_tensors)) {
@@ -354,28 +420,34 @@ const view4 = () => {
 
 	Plotly.newPlot("view-plt", [{
 		x: x,
-		y: y,
+		y: Array(x.length).fill(0),
 		type: "bar",
-		marker: { color: green },
+		marker: {color: green},
 		transforms: [{
 			type: 'sort',
 			target: 'y',
 			order: 'descending'
 		}]
-	}], { ...layout });
+	}], {...layout, xaxis: {'visible': false}, yaxis: {range: [0, 50]}});
 
-}
+	const finalData = [{
+		x: x,
+		y: y
+	}];
+
+	Plotly.animate("view-plt", {data: finalData, layout: {xaxis: {'visible': true}}}, {...animationConfig});
+};
 
 const view3 = () => {
-	title.textContent = "Let's take a look at the average popularity of music genres"
-	subtitle.textContent = "Popularity is a metric reported by the Spotify API which reports how popular a given artist is at the time of data collection."
+	title.textContent = "Let's take a look at the average popularity of music genres";
+	subtitle.textContent = "Popularity is a metric reported by the Spotify API which reports how popular a given artist is at the time of data collection.";
 	content.innerHTML = `
 		<div class="view w-full h-full flex justify-center items-center">
 			<div id="view-plt"/>
 		</div>
 	`;
 
-	let pop_tensors = df.loc({ columns: ["top_genre", "popularity"] }).groupby(["top_genre"]).colDict;
+	let pop_tensors = df.loc({columns: ["top_genre", "popularity"]}).groupby(["top_genre"]).colDict;
 	let x = [];
 	let y = [];
 	for (let [genre, popularity] of Object.entries(pop_tensors)) {
@@ -387,46 +459,46 @@ const view3 = () => {
 	const finalData = [{
 		x: x,
 		y: y
-	}]
+	}];
 
 	Plotly.newPlot("view-plt", [{
 		x: x,
 		y: Array(x.length).fill(0),
 		type: "bar",
-		marker: { color: green },
+		marker: {color: green},
 		transforms: [{
 			type: 'sort',
 			target: 'y',
 			order: 'descending'
-		}],
-	}], { ...layout, xaxis: { 'visible': false }, yaxis: { range: [0, 50] } });
+		}]
+	}], {...layout, xaxis: {'visible': false}, yaxis: {range: [0, 50]}});
 
-	Plotly.animate("view-plt", { data: finalData, layout: { xaxis: { 'visible': true } } }, { ...animationConfig });
+	Plotly.animate("view-plt", {data: finalData, layout: {xaxis: {'visible': true}}}, {...animationConfig});
 
-}
+};
 
 const view2 = () => {
-	title.textContent = "Music Genres"
-	subtitle.textContent = "Song genres after preprocessing"
+	title.textContent = "Music Genres";
+	subtitle.textContent = "Song genres after preprocessing";
 	content.innerHTML = `
 		<div class="w-full h-full flex justify-center items-center">
 			<div id="view-plt"/>
 		</div>
 	`;
 
-	let v = df["top_genre"].valueCounts().sortValues({ 'ascending': false });
+	let v = df["top_genre"].valueCounts().sortValues({'ascending': false});
 
 	Plotly.newPlot("view-plt", [{
 		x: v.index.map((x) => x == "undefined" ? "other" : x),
 		y: Array(v.size).fill(0),
 		type: 'bar',
-		marker: { color: green },
+		marker: {color: green},
 		transforms: [{
 			type: 'sort',
 			target: 'y',
 			order: 'descending'
 		}]
-	}], { xaxis: { 'visible': false }, yaxis: { range: [0, 3000] }, ...layout });
+	}], {xaxis: {'visible': false}, yaxis: {range: [0, 3000]}, ...layout});
 
 	const finalData = [{
 		x: v.index.map((x) => x == "undefined" ? "other" : x),
@@ -434,8 +506,11 @@ const view2 = () => {
 	}];
 
 
-	Plotly.animate("view-plt", { data: finalData, layout: { xaxis: { 'visible': true } } }, { ...animationConfig });
-}
+	Plotly.animate("view-plt", {
+		data: finalData,
+		layout: {xaxis: {'visible': true}, yaxis: {range: [0, 3000]}}
+	}, {...animationConfig});
+};
 
 const view1 = () => {
 
@@ -469,7 +544,7 @@ const view1 = () => {
 		enableButtons(true, true);
 		content.innerHTML = chart;
 	});
-}
+};
 
 const introductionView = () => {
 	title.textContent = "Project Orpheus";
@@ -498,12 +573,12 @@ const introductionView = () => {
 			</div>
 		</div>
 	`;
-}
+};
 
 const endView = () => {
 	title.textContent = "Thank You";
-	subtitle.innerHTML = `<a href="https://github.com/RafaelPiloto10/orpheus" target="_blank" referrer="noreferrer">For more information, check out our <span class="text-green-500 underline">GitHub</span></a>`
-}
+	subtitle.innerHTML = `<a href="https://github.com/RafaelPiloto10/orpheus" target="_blank" referrer="noreferrer">For more information, check out our <span class="text-green-500 underline">GitHub</span></a>`;
+};
 
 let views = [introductionView, view1, view2, view3, view4, view5, view6, viewTable, closeReading1, closeReading2, closeReading3, endView];
 let currentView = 0;
@@ -511,11 +586,11 @@ let currentView = 0;
 const renderView = (view) => {
 	content.innerHTML = "";
 	view();
-}
+};
 
 const _render = () => {
 	renderView(views[currentView]);
-}
+};
 
 const visitNext = () => {
 	// enables both buttons in case they were disabled on the previous view
@@ -527,7 +602,7 @@ const visitNext = () => {
 		progress.style.width = `${(currentView / (views.length - 1)) * 100}%`;
 		_render();
 	}
-}
+};
 
 const visitBack = () => {
 	// enables both buttons in case they were disabled on the previous view
@@ -539,7 +614,7 @@ const visitBack = () => {
 		progress.style.width = `${(currentView / (views.length - 1)) * 100}%`;
 		_render();
 	}
-}
+};
 
 const disableButtons = (f, b) => {
 	if (f) {
@@ -555,7 +630,7 @@ const disableButtons = (f, b) => {
 		backIcon.style.stroke = "gray";
 		backIcon.classList.remove("hover:fill-white");
 	}
-}
+};
 
 const enableButtons = (f, b) => {
 	if (f) {
@@ -571,7 +646,7 @@ const enableButtons = (f, b) => {
 		backIcon.style.stroke = "white";
 		backIcon.classList.add("hover:fill-white");
 	}
-}
+};
 
 window.onload = async () => {
 	await loadData();
@@ -583,4 +658,4 @@ window.onload = async () => {
 
 	next.addEventListener("click", () => visitNext());
 	back.addEventListener("click", () => visitBack());
-}
+};
