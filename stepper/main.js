@@ -577,8 +577,36 @@ const introductionView = () => {
 
 const endView = () => {
 	title.textContent = "Thank You";
-	subtitle.innerHTML = `<a href="https://github.com/RafaelPiloto10/orpheus" target="_blank" referrer="noreferrer">For more information, check out our <span class="text-green-500 underline">GitHub</span></a>`;
-};
+	subtitle.innerHTML = `<a href="https://github.com/RafaelPiloto10/orpheus" target="_blank" referrer="noreferrer">For more information, check out our <span class="text-green-500 underline">GitHub</span></a>`
+	content.innerHTML = `
+		<div class="w-full h-full flex flex-col justify-center items-center overflow-hidden gap-2">
+			<div class="grow flex justify-center items-center">
+				<p class="text-white">
+					Limitations: Do consider that we were only able to explore 6K randomly selected songs from a dataset of 50K songs. This is in no way representative of all of music,
+					but we are still interested in some of the results that we were able to find in how gender operates within the songs <span class="italic">we did analyze</span>.
+					We used the <a href="https://github.com/NLP-Suite/NLP-Suite">NLP Suite</a> for our analysis which has its own limitations.
+				</p>
+			</div>
+
+			<div class="flex flex-col items-start justify-end gap-2">
+				<div class="flex flex-row items-center justify-center gap-4" >
+					<img class="w-16 h-16 object-cover rounded-full overflow-hidden" src="https://rafaelpiloto10.github.io/assets/img/profile.jpg" />
+					<p class="text-white">
+						Rafael Piloto (<a class="underline text-green-500" href="https://github.com/RafaelPiloto10" target="_blank">@RafaelPiloto10</a>)
+					</p>
+				</div>
+
+				<div class="flex flex-row items-center justify-center gap-4 pb-8" >
+					<img class="w-16 h-16 object-cover rounded-full overflow-hidden" src="assets/authors/albert.jpeg" />
+					<p class="text-white">
+						Albert Terc (<a class="underline text-green-500" href="https://github.com/albytterc" target="_blank">@albytterc</a>)
+					</p>
+				</div>
+			</div>
+		</div>
+
+	`;
+}
 
 let views = [introductionView, view1, view2, view3, view4, view5, view6, viewTable, closeReading1, closeReading2, closeReading3, endView];
 let currentView = 0;
