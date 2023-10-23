@@ -558,7 +558,7 @@ const introductionView = () => {
 
 			<div class="flex flex-col items-start justify-end gap-2">
 				<div class="flex flex-row items-center justify-center gap-4" >
-					<img class="w-16 h-16 object-cover rounded-full overflow-hidden" src="https://rafaelpiloto10.github.io/assets/img/profile.jpg" />
+					<img class="w-16 h-16 object-cover rounded-full overflow-hidden" src="https://rpiloto.codes/pfp.jpeg" />
 					<p class="text-white">
 						Rafael Piloto (<a class="underline text-green-500" href="https://github.com/RafaelPiloto10" target="_blank">@RafaelPiloto10</a>)
 					</p>
