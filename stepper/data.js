@@ -1,4 +1,4 @@
-import metadata from './assets/metadata_genres.json' assert {type: 'json'};
+import metadata from './assets/metadata_genres.json';
 
 async function loadData() {
 	var df = new dfd.DataFrame(metadata["results"]);
